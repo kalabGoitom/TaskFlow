@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Task Manager</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="content-container">
+          <div class="logo-container">
+            <h1>
+              <span><i class="fa-solid fa-list-check"></i></span>
+              <span>Advanced Task Manager</span>
+            </h1>
+          </div>
+
+          <div class="btn-container">
+            <button class="day-mode"><i class="fa-solid fa-sun"></i></button>
+            <button class="night-mode hide">
+              <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <div class="show-close-btns">
+              <button id="show-nav-btn">
+                <i class="fa-solid fa-bars"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <aside>
+        <nav class="navigation">
+          <ul id="nav-bar">
+            <li data-id="all" class="active">
+              <span><i class="fa-solid fa-list-check"></i></span>
+              <span>All Tasks</span>
+            </li>
+            <li data-id="today">
+              <span><i class="fa-solid fa-calendar-day"></i></span>
+              <span>Today</span>
+            </li>
+            <li data-id="important">
+              <span><i class="fa-solid fa-star"></i></span>
+              <span>Important</span>
+            </li>
+            <li data-id="completed">
+              <span><i class="fa-solid fa-clock"></i></span>
+              <span>Completed</span>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="statistics-container">
+          <h2>statistics</h2>
+          <ul class="statistics-list"></ul>
+        </div>
+      </aside>
+
+      <section>
+        <div class="container">
+          <div class="menu-container">
+            <div class="menu-1">
+              <div class="task-type"><h2 id="current-task">All Tasks</h2></div>
+
+              <div class="menus">
+                <div class="search-bar-container">
+                  <input
+                    type="search"
+                    placeholder="search tasks..."
+                    id="search-bar"
+                  />
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <button id="add-btn">
+                  <span><i class="fa-solid fa-plus"></i></span>
+                  <span>Add Tasks</span>
+                </button>
+
+                <div class="sort-option">
+                  <button id="sort-btn">
+                    <span><i class="fa-solid fa-sort"></i></span>
+                    <span>Sort</span>
+                  </button>
+                  <div class="sort-type">
+                    <ul>
+                      <li data-type="date">Due data</li>
+                      <li data-type="priority">Priority</li>
+                      <li data-type="alphabet">Alphabet</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="menu-2">
+              <div class="priority-sort">
+                <label for="priority">Priority:</label>
+                <select name="priority" id="priority">
+                  <option value="all">All</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+            </div>
+            <div class="border"></div>
+          </div>
+
+          <div class="task-body">
+            <ul id="task-list-container">
+              <!-- Tasks will be injected using Js -->
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section hide">
+        <div class="container">
+          <div class="form-container">
+            <div class="header-container">
+              <h2>Add New Task</h2>
+              <button id="hide-btn"><i class="fa fa-times"></i></button>
+            </div>
+            <form action="">
+              <div class="input-group">
+                <label for="title">Title*</label>
+                <input type="text" id="title" required />
+              </div>
+              <div class="input-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description"></textarea>
+              </div>
+              <div class="input-group-2">
+                <div>
+                  <label for="due-date">Due Date*</label>
+                  <input type="date" name="due-date" id="due-date" />
+                </div>
+
+                <div>
+                  <label for="task-priority">Priority</label>
+                  <select name="prior" id="task-priority">
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <button id="save-task" type="submit">Save Tasks</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,765 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* border: 1px solid red; */
+}
+
+:root {
+  --primary-bg: rgb(1, 5, 23);
+  --header-bg: rgb(0, 96, 186);
+  --nav-bg: rgb(44, 46, 57);
+  --header-height: 80px;
+}
+
+/* Normalization */
+
+body {
+  font-family: sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+label {
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+select {
+  cursor: pointer;
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+}
+
+i {
+  font-size: 1.1rem;
+}
+
+textarea {
+  max-width: 100%;
+  min-width: 100%;
+  height: 100px;
+  max-height: 200px;
+}
+
+/* Utility styles */
+.hide {
+  display: none !important;
+}
+
+.night-mode {
+  color: #000;
+}
+
+.day-mode {
+  color: gold;
+}
+
+.active {
+  background-color: rgba(0, 0, 255, 0.242);
+}
+
+.border {
+  background-color: #333;
+  width: 100%;
+  height: 1px;
+  margin-top: 5px;
+}
+
+.important {
+  color: orange;
+}
+
+.show {
+  transform: translateX(0px);
+}
+
+/* Header Styling */
+header {
+  background-color: var(--header-bg);
+  color: #fff;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header .container .content-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: wrap;
+}
+
+header .container .content-container h1 {
+  font-size: clamp(1rem, 1rem + 2vw, 3rem);
+}
+
+header .container .content-container h1 i {
+  font-size: clamp(1rem, 1rem + 2vw, 3rem);
+}
+
+header .container .content-container .btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header .container .content-container .btn-container button {
+  background: none;
+  transition: all linear 0.3s;
+}
+
+header .container .content-container .btn-container button:hover {
+  transform: translateY(-4px);
+}
+
+header .container .content-container .btn-container button i {
+  background: none;
+  font-size: clamp(0.5rem, 0.75rem + 2vw, 2rem);
+}
+
+header .container .show-close-btns {
+  display: none;
+  margin-left: 10px;
+}
+
+header .container .show-close-btns button {
+  font-size: clamp(0.5rem, 0.75rem + 2vw, 2rem);
+  color: #fff;
+}
+/* main styling */
+main {
+  background-color: var(--primary-bg);
+  color: #fff;
+  display: flex;
+  height: calc(100vh - 80px);
+  overflow-y: scroll;
+}
+
+/* aside styling */
+main aside {
+  background: var(--nav-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  padding: 20px 0;
+  min-width: 175px;
+}
+
+main aside nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+main aside nav ul li {
+  padding: 0.5rem 0.75rem;
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: capitalize;
+}
+
+main aside nav ul li:hover {
+  background-color: rgba(0, 0, 255, 0.242);
+  color: var(--primary-btn);
+}
+
+main aside .statistics-container h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #858585;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+}
+
+main aside .statistics-container ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+main aside .statistics-container ul li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* section styling */
+section {
+  flex: 1;
+}
+
+section .container {
+  max-width: 800px;
+  margin: 20px;
+}
+
+section .menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 10px 20px;
+}
+
+section .menu-container .menu-1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+section .menu-container .menu-1 .task-type h2 {
+  text-transform: capitalize;
+  font-size: 1.5rem;
+}
+
+section .menu-container .menu-1 .menus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+section .menu-container .menu-1 .menus .search-bar-container {
+  position: relative;
+}
+
+section .menu-container .menu-1 .menus .search-bar-container input {
+  padding: 0.5rem 2.5rem;
+  border: none;
+  background-color: #8585854a;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+section .menu-container .menu-1 .menus .search-bar-container input:focus {
+  border: 1px solid #fff;
+  outline: none;
+}
+
+section .menu-container .menu-1 .menus .search-bar-container i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #858585;
+  font-size: 1rem;
+}
+
+#add-btn,
+section .menu-container .menu-1 .menus .sort-option button,
+.form-section .form-container form button {
+  background-color: var(--header-bg);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all linear 0.3s;
+}
+
+#add-btn:hover,
+section .menu-container .menu-1 .menus .sort-option button:hover {
+  transform: translateY(-4px);
+}
+
+section .menu-container .menu-1 .menus .sort-option {
+  position: relative;
+}
+
+section .menu-container .menu-1 .menus .sort-option .sort-type {
+  display: none;
+  position: absolute;
+  background-color: #8585855d;
+  padding: 1rem;
+  border-radius: 10px;
+  width: 100px;
+}
+
+section .menu-container .menu-1 .menus .sort-option .sort-type ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+section .menu-container .menu-1 .menus .sort-option .sort-type ul li {
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all linear.3s;
+  text-transform: capitalize;
+}
+
+section .menu-container .menu-1 .menus .sort-option .sort-type ul li:hover {
+  transform: translateY(-4px);
+}
+
+section .menu-container .menu-2 .priority-sort label {
+  color: #858585;
+  font-size: 1rem;
+}
+
+section .menu-container .menu-2 .priority-sort select {
+  background: rgb(44, 46, 57);
+  color: #fff;
+  padding: 0.25rem 1rem;
+  border: none;
+}
+
+/* section task-body styling */
+section .task-body {
+  padding-bottom: 20px;
+}
+
+section .task-body ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+section .task-body ul p {
+  color: #858585;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 1.25rem;
+  gap: 20px;
+  margin: auto;
+  margin-top: 40px;
+  max-width: 350px;
+}
+
+section .task-body ul p i {
+  font-size: 2.5rem;
+}
+
+section .task-body ul li.medium {
+  border-left: yellow 5px solid;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+section .task-body ul li.low {
+  border-left: green 5px solid;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+section .task-body ul li.high {
+  border-left: red 5px solid;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+section .task-body ul li .task-container {
+  background-color: rgb(44, 46, 57);
+  padding: 1rem;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+section .task-body ul li .task-container .task-discription {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+section .task-body ul li .task-container .task-discription .task-name {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+section .task-body ul li .task-container .task-discription .task-name label {
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+section .task-body ul li .task-container .task-discription .task-name input {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+section .task-body ul li .task-container .task-discription h3 {
+  color: #ffffffab;
+  font-weight: 400;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+section .task-body ul li .task-container .task-discription .data-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 0.9rem;
+  color: #ffffffab;
+  font-weight: 400;
+}
+
+section .task-body ul li .task-container .task-discription .data-container i {
+  font-size: 0.9rem;
+}
+
+section
+  .task-body
+  ul
+  li.low-pr
+  .task-container
+  .task-discription
+  .data-container
+  .label-container
+  span {
+  color: green;
+  background-color: rgba(0, 128, 0, 0.176);
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+section
+  .task-body
+  ul
+  li.medium-pr
+  .task-container
+  .task-discription
+  .data-container
+  .label-container
+  span {
+  color: yellow;
+  background-color: rgba(119, 128, 0, 0.176);
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+section
+  .task-body
+  ul
+  li.high-pr
+  .task-container
+  .task-discription
+  .data-container
+  .label-container
+  span {
+  color: red;
+  background-color: rgba(128, 0, 0, 0.176);
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+section .task-body ul li.task-container .task-btns {
+  display: flex;
+  gap: 20px;
+}
+
+section .task-body ul li .task-container .task-btns button {
+  background: transparent;
+  color: rgba(0, 96, 186, 0.632);
+  transition: all linear 0.3s;
+}
+
+section .task-body ul li .task-container .task-btns button:hover {
+  transform: translateY(-4px);
+}
+
+section .task-body ul li .task-container .task-btns button.important {
+  color: orange;
+}
+
+/* Modal section */
+.form-section {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.386);
+  inset: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-section .container {
+  max-width: 400px;
+}
+
+.form-section .form-container {
+  background: #222222;
+  padding: 1.5rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-section .form-container .header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-section .form-container .header-container h2 {
+  font-size: clamp(0.5rem, 0.75rem + 2vw, 1.5rem);
+}
+
+.form-section .form-container .header-container button {
+  background-color: transparent;
+  transition: all linear 0.3s;
+}
+
+.form-section .form-container .header-container button i {
+  color: #8b8b8b;
+}
+
+.form-section .form-container .header-container button:hover {
+  transform: translateY(-4px);
+}
+
+.form-section .form-container form {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.form-section .form-container form .input-group {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.form-section .form-container form .input-group-2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.form-section .form-container form .input-group-2 div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-section .form-container form input,
+.form-section .form-container form select,
+.form-section .form-container form textarea {
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  background-color: #8585856b;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+
+.form-section .form-container form select option {
+  background: #333;
+}
+
+.form-section .form-container form button {
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+}
+
+.form-section .form-container form button:hover {
+  transform: translateY(-4px);
+}
+
+/* Mobile version */
+/* @media screen and (max-width: 800px) {
+  section .menu-container .menu-1 {
+    flex-direction: column;
+    gap: 20px;
+    align-items: start;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  main aside {
+    position: fixed;
+    height: calc(100vh - var(--header-height));
+    top: 80px;
+    z-index: 100;
+    transition: all linear 0.3s;
+    transform: translateX(-175px);
+  }
+
+  header .container .show-close-btns {
+    display: flex;
+    margin-left: 10px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+
+}
+
+@media screen and (max-width: 425px) {
+  .form-section .form-container form .input-group-2 {
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+  }
+
+  .form-section .form-container form .input-group-2 div {
+    flex: 1;
+    width: 100%;
+  }
+
+  .form-section .form-container form label {
+    font-size: 0.85rem;
+  }
+} */
+
+@media screen and (max-width: 900px) {
+  main {
+    flex-direction: column;
+  }
+
+  main aside {
+    position: fixed;
+    left: 0;
+    top: var(--header-height);
+    height: calc(100vh - var(--header-height));
+    width: 220px;
+    transform: translateX(-100%);
+    transition: 0.3s ease;
+  }
+
+  main aside.show {
+    transform: translateX(0);
+    z-index: 100;
+  }
+
+  header .container .show-close-btns {
+    display: flex;
+    margin-left: 10px;
+  }
+
+  section {
+    width: 100%;
+  }
+
+  section .container {
+    margin: 15px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  header .content-container {
+    flex-direction: row;
+  }
+
+  header h1 {
+    font-size: 1.2rem;
+  }
+
+  header .btn-container {
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  section .menu-container .menu-1 {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 15px;
+  }
+
+  section .menu-container .menu-1 .menus {
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    align-items: start;
+    justify-content: start;
+  }
+
+  section .menu-container .menu-1 .menus .search-bar-container input {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  section .task-body ul li .task-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  section .task-body ul li .task-container .task-btns {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  section .task-body ul li .task-container .task-discription {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .form-section .container {
+    width: 95%;
+  }
+
+  .form-section .form-container {
+    padding: 1rem;
+  }
+
+  .form-section .form-container form input,
+  .form-section .form-container form select,
+  .form-section .form-container form textarea {
+    font-size: 1rem;
+  }
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Scroller bar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4e73df;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #4e73df transparent;
+}
