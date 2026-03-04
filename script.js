@@ -21,6 +21,8 @@ const sortBtn = document.getElementById("sort-btn");
 const hideBtn = document.getElementById("hide-btn");
 const saveTaskBtn = document.getElementById("save-task");
 const showNavBtn = document.getElementById("show-nav-btn");
+const dayBtn = document.querySelector(".day-mode");
+const nightBtn = document.querySelector(".night-mode");
 
 let taskList = JSON.parse(localStorage.getItem("taskList")) || [];
 
@@ -30,8 +32,10 @@ let editId = null;
 let isSearching = false;
 let sortIsHidden = true;
 let sortingMethod = null;
-
+let searchQuery = "";
 let activeTab = "all";
+let selectedPriority = "all";
+
 let todayDate = new Date().toISOString().split("T")[0];
 
 // eventListners
@@ -72,7 +76,7 @@ saveTaskBtn.addEventListener("click", (e) => {
   });
 
   createTask();
-  renderTasks(taskList);
+  updateUI();
   formSection.classList.toggle("hide");
   reset();
 });
@@ -115,13 +119,15 @@ taskListContainer.addEventListener("click", (e) => {
 
 searchBarEl.addEventListener("input", () => {
   isSearching = true;
-  const searchInput = searchBarEl.value;
-  filterSearch(searchInput);
+  searchQuery = searchBarEl.value;
+  // filterSearch(searchInput);
+  updateUI();
 });
 
 priorityOption.addEventListener("change", () => {
-  const priority = priorityOption.value;
-  filterPriority(priority);
+  selectedPriority = priorityOption.value;
+  // filterPriority(priority);
+  updateUI();
 });
 
 sortBtn.addEventListener("click", () => {
@@ -140,46 +146,46 @@ sortOptionsContainer.addEventListener("click", (e) => {
   sortingMethod = sortType.toLowerCase();
   sortOptions.style.display = "none";
 
-  sortTask(sortingMethod);
+  // sortTask(sortingMethod);
+  updateUI();
 });
 
 showNavBtn.addEventListener("click", () => {
   asideEl.classList.toggle("show");
 });
 
+nightBtn.addEventListener("click", () => {
+  dayBtn.classList.remove("hide");
+  nightBtn.classList.add("hide");
+  document.querySelector("body").classList.remove("default");
+  console.log("working");
+});
+
+dayBtn.addEventListener("click", () => {
+  dayBtn.classList.add("hide");
+  nightBtn.classList.remove("hide");
+  document.querySelector("body").classList.add("default");
+  console.log("working");
+});
+
 // Functions
 
 function activeNav(linkId) {
   if (linkId === "all") {
-    renderTasks(taskList);
     activeTab = "all";
+    updateUI();
     currentTaskEl.textContent = "all tasks";
   } else if (linkId === "today") {
     activeTab = "today";
-    tasks = taskList.filter((task) => {
-      if (task.dueDate === todayDate) {
-        return task;
-      }
-    });
-    navigate(tasks, "today");
+    updateUI();
     currentTaskEl.textContent = "today's tasks";
   } else if (linkId === "important") {
     activeTab = "important";
-    tasks = taskList.filter((task) => {
-      if (task.isImportant) {
-        return task;
-      }
-    });
-    navigate(tasks, "important");
+    updateUI();
     currentTaskEl.textContent = "important tasks";
   } else if (linkId === "completed") {
     activeTab = "completed";
-    tasks = taskList.filter((task) => {
-      if (task.isCompleted) {
-        return task;
-      }
-    });
-    navigate(tasks, "completed");
+    updateUI();
     currentTaskEl.textContent = "completed tasks";
   }
 }
@@ -229,6 +235,51 @@ function renderTasks(task) {
   }
   taskListContainer.innerHTML = html(tasks);
   updateStatistics();
+}
+
+function updateUI() {
+  let tasks = [...taskList];
+
+  // Apply active tab filter
+  if (activeTab === "today") {
+    tasks = tasks.filter((task) => task.dueDate === todayDate);
+  }
+
+  if (activeTab === "important") {
+    tasks = tasks.filter((task) => task.isImportant);
+  }
+
+  if (activeTab === "completed") {
+    tasks = tasks.filter((task) => task.isCompleted);
+  }
+
+  // Apply search filter
+  if (searchQuery) {
+    tasks = tasks.filter((task) =>
+      task.title.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }
+
+  // Apply priority filter
+  if (selectedPriority !== "all") {
+    tasks = tasks.filter((task) => task.priority === selectedPriority);
+  }
+
+  // Apply sorting
+  if (sortingMethod === "priority") {
+    tasks = sortyByPriority(tasks);
+  }
+
+  if (sortingMethod === "date") {
+    tasks = sortByDueDate(tasks);
+  }
+
+  if (sortingMethod === "alphabet") {
+    tasks = sortByAlphabate(tasks);
+  }
+
+  // Render
+  renderTasks(tasks);
 }
 
 function html(tasks) {
@@ -303,36 +354,11 @@ function formatDate(dateVal) {
 // Function for deleting tasks
 
 function deleteTask(id) {
-  let tasks;
   taskList = taskList.filter((task) => !(parseInt(task.id) === parseInt(id)));
 
   saveToLocalStorage();
   updateStatistics();
-  activeNav(activeTab);
-  // if (activeTab === "all") {
-  //   renderTasks();
-  // } else if (activeTab === "today") {
-  //   tasks = taskList.filter((task) => {
-  //     if (task.dueDate === todayDate) {
-  //       return task;
-  //     }
-  //   });
-  //   navigate(tasks, "today");
-  // } else if (activeTab === "important") {
-  //   tasks = taskList.filter((task) => {
-  //     if (task.isImportant) {
-  //       return task;
-  //     }
-  //   });
-  //   navigate(tasks, "important");
-  // } else if (activeTab === "completed") {
-  //   tasks = taskList.filter((task) => {
-  //     if (task.isCompleted) {
-  //       return task;
-  //     }
-  //   });
-  //   navigate(tasks, "completed");
-  // }
+  updateUI();
 }
 
 // function for editing tasks
@@ -363,14 +389,12 @@ function edit(id) {
     return task;
   });
   saveToLocalStorage();
-  renderTasks(taskList);
-  reset();
+  updateUI();
   formSection.classList.toggle("hide");
   saveTaskBtn.innerHTML = "Save Tasks";
 }
 
 function importantList(id, btn) {
-  let tasks;
   taskList = taskList.map((task) => {
     if (parseInt(id) === parseInt(task.id)) {
       if (task.isImportant) {
@@ -384,13 +408,7 @@ function importantList(id, btn) {
     return task;
   });
   saveToLocalStorage();
-  tasks = taskList.filter((task) => {
-    if (task.isImportant) {
-      return task;
-    }
-  });
-
-  if (activeTab === "important") navigate(tasks, "important");
+  updateUI();
 }
 
 function taskCompleted(id) {
@@ -406,17 +424,7 @@ function taskCompleted(id) {
   });
   saveToLocalStorage();
   updateStatistics();
-
-  if (activeTab === "all") {
-    renderTasks(taskList);
-  } else if (activeTab === "completed") {
-    let tasks = taskList.filter((task) => {
-      if (task.isCompleted) {
-        return task;
-      }
-    });
-    navigate(tasks, "completed");
-  }
+  updateUI();
 }
 
 // function that resets input value to default
@@ -426,126 +434,6 @@ function reset() {
   taskDue.value = "";
   isEditing = false;
   editId = null;
-}
-
-function navigate(tasks, type) {
-  if (tasks.length === 0) {
-    let html;
-    if (type === "today") {
-      html = `<p>
-                <span
-                  ><i class="fa-solid fa-clipboard-list"></i></span
-                >
-                  <span
-                    >No Tasks for Today!</span
-                  >
-              </p>`;
-    } else if (type === "important") {
-      html = `<p>
-                <span
-                  ><i class="fa-solid fa-clipboard-list"></i></span
-                >
-                  <span
-                    >No Important Tasks!</span
-                  >
-              </p>`;
-    } else if (type === "completed") {
-      html = `<p>
-                <span
-                  ><i class="fa-solid fa-clipboard-list"></i></span
-                >
-                  <span
-                    >No Completed Tasks!</span
-                  >
-              </p>`;
-    }
-
-    taskListContainer.innerHTML = html;
-    return;
-  }
-  taskListContainer.innerHTML = html(tasks);
-}
-
-function filterSearch(searchInput) {
-  let tasks = taskList.filter((task) => {
-    const matchesSearch = task.title
-      .toLowerCase()
-      .includes(searchInput.toLowerCase());
-
-    if (!matchesSearch) return false;
-
-    if (activeTab === "all") return true;
-    if (activeTab === "completed") return task.isCompleted;
-    if (activeTab === "important") return task.isImportant;
-    if (activeTab === "today") return task.dueDate === todayDate;
-
-    return false;
-  });
-
-  if (activeTab === "all") {
-    renderTasks(tasks);
-  } else {
-    navigate(tasks, activeTab);
-  }
-}
-
-function filterPriority(priority) {
-  let tasks = taskList.filter((task) => {
-    let temp = priority === "all" || task.priority === priority;
-    if (!temp) return false;
-
-    if (activeTab === "all") return true;
-    if (activeTab === "completed") return task.isCompleted;
-    if (activeTab === "important") return task.isImportant;
-    if (activeTab === "today") return task.dueDate === todayDate;
-    return false;
-  });
-
-  if (activeTab === "all") {
-    renderTasks(tasks);
-  } else {
-    navigate(tasks, activeTab);
-  }
-}
-
-function sortTask(sortType) {
-  let tasks = [...taskList];
-  let sortedTasks;
-  if (sortType === "date") {
-    sortedTasks = sortByDueDate(tasks);
-  } else if (sortType === "priority") {
-    sortedTasks = sortyByPriority(tasks);
-  } else if (sortType === "alphabet") {
-    sortedTasks = sortByAlphabate(tasks);
-  }
-  renderSortedTasks(sortedTasks);
-}
-
-function renderSortedTasks(sortedTasks) {
-  if (activeTab === "all") {
-    renderTasks(sortedTasks);
-  } else if (activeTab === "today") {
-    sortedTasks = sortedTasks.filter((task) => {
-      if (task.dueDate === todayDate) {
-        return task;
-      }
-    });
-    navigate(sortedTasks, "today");
-  } else if (activeTab === "important") {
-    sortedTasks = sortedTasks.filter((task) => {
-      if (task.isImportant) {
-        return task;
-      }
-    });
-    navigate(sortedTasks, "important");
-  } else if (activeTab === "completed") {
-    sortedTasks = sortedTasks.filter((task) => {
-      if (task.isCompleted) {
-        return task;
-      }
-    });
-    navigate(sortedTasks, "completed");
-  }
 }
 
 function weightPriority(priority) {
@@ -561,21 +449,19 @@ function weightPriority(priority) {
 // Sorting functions
 
 function sortyByPriority(tasks) {
-  tasks = tasks.sort(
-    (a, b) => weightPriority(a.priority) - weightPriority(b.priority),
-  );
+  tasks.sort((a, b) => weightPriority(a.priority) - weightPriority(b.priority));
   console.log(tasks);
 
   return tasks;
 }
 
 function sortByDueDate(tasks) {
-  tasks = tasks.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+  tasks.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
   return tasks;
 }
 
 function sortByAlphabate(tasks) {
-  tasks = tasks.sort((a, b) =>
+  tasks.sort((a, b) =>
     a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
   );
   return tasks;

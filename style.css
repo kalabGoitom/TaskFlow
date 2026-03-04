@@ -2,13 +2,41 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: sans-serif;
 }
 
 :root {
   --primary-bg: rgb(1, 5, 23);
+  --secondary-bg: #222222;
   --header-bg: rgb(0, 96, 186);
   --nav-bg: rgb(44, 46, 57);
   --header-height: 80px;
+  --text-color-1: #fff;
+  --text-color-2: #ffffffab;
+  --medium-priority: yellow;
+  --high-priority: red;
+  --low-priority: green;
+  --important: orange;
+  --input-2: #8585856b;
+  --input-3: #333;
+  --input-4: #8585855d;
+}
+
+body.default {
+  --primary-bg: rgb(255, 255, 255);
+  --secondary-bg: #ffffff;
+  --header-bg: rgb(0, 96, 186);
+  --nav-bg: rgb(236, 236, 236);
+  --header-height: 80px;
+  --text-color-1: #272727;
+  --text-color-2: #0000008f;
+  --medium-priority: yellow;
+  --high-priority: red;
+  --low-priority: green;
+  --important: orange;
+  --input-2: #eeeeeeaf;
+  --input-3: #e0e0e0;
+  --input-4: #8585853d;
 }
 
 /* Normalization */
@@ -84,6 +112,14 @@ textarea {
   transform: translateX(0px);
 }
 
+.delete-btn {
+  color: red !important;
+}
+
+.edit-btn {
+  color: green !important;
+}
+
 /* Header Styling */
 header {
   background-color: var(--header-bg);
@@ -141,7 +177,7 @@ header .container .show-close-btns button {
 /* main styling */
 main {
   background-color: var(--primary-bg);
-  color: #fff;
+  color: var(--text-color-1);
   display: flex;
   height: calc(100vh - 80px);
   overflow-y: scroll;
@@ -247,12 +283,12 @@ section .menu-container .menu-1 .menus .search-bar-container input {
   border: none;
   background-color: #8585854a;
   border-radius: 5px;
-  color: #fff;
+  color: var(--text-color-1);
   font-size: 1rem;
 }
 
 section .menu-container .menu-1 .menus .search-bar-container input:focus {
-  border: 1px solid #fff;
+  border: 1px solid var(--text-color-1);
   outline: none;
 }
 
@@ -291,10 +327,11 @@ section .menu-container .menu-1 .menus .sort-option {
 section .menu-container .menu-1 .menus .sort-option .sort-type {
   display: none;
   position: absolute;
-  background-color: #8585855d;
+  background-color: var(--input-4);
   padding: 1rem;
   border-radius: 10px;
   width: 100px;
+  z-index: 99;
 }
 
 section .menu-container .menu-1 .menus .sort-option .sort-type ul {
@@ -320,8 +357,9 @@ section .menu-container .menu-2 .priority-sort label {
 }
 
 section .menu-container .menu-2 .priority-sort select {
-  background: rgb(44, 46, 57);
-  color: #fff;
+  background: var(--nav-bg);
+  color: var(--text-color-1);
+  border-radius: 4px;
   padding: 0.25rem 1rem;
   border: none;
 }
@@ -356,19 +394,19 @@ section .task-body ul p i {
 }
 
 section .task-body ul li.medium {
-  border-left: yellow 5px solid;
+  border-left: var(--medium-priority) 5px solid;
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
 }
 
 section .task-body ul li.low {
-  border-left: green 5px solid;
+  border-left: var(--low-priority) 5px solid;
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
 }
 
 section .task-body ul li.high {
-  border-left: red 5px solid;
+  border-left: var(--high-priority) 5px solid;
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
 }
@@ -380,6 +418,17 @@ section .task-body ul li .task-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+section .task-body ul li {
+  transition: all linear 0.3s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+section .task-body ul li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 0px 10px rgba(120, 120, 120, 0.582);
 }
 
 section .task-body ul li .task-container .task-discription {
@@ -406,7 +455,7 @@ section .task-body ul li .task-container .task-discription .task-name input {
 }
 
 section .task-body ul li .task-container .task-discription h3 {
-  color: #ffffffab;
+  color: var(--text-color-2);
   font-weight: 400;
   font-size: 0.9rem;
   letter-spacing: 1px;
@@ -417,7 +466,7 @@ section .task-body ul li .task-container .task-discription .data-container {
   align-items: center;
   gap: 20px;
   font-size: 0.9rem;
-  color: #ffffffab;
+  color: var(--text-color-2);
   font-weight: 400;
 }
 
@@ -492,7 +541,7 @@ section .task-body ul li .task-container .task-btns button:hover {
 }
 
 section .task-body ul li .task-container .task-btns button.important {
-  color: orange;
+  color: var(--important);
 }
 
 /* Modal section */
@@ -513,7 +562,7 @@ section .task-body ul li .task-container .task-btns button.important {
 }
 
 .form-section .form-container {
-  background: #222222;
+  background: var(--secondary-bg);
   padding: 1.5rem;
   border-radius: 10px;
   display: flex;
@@ -575,19 +624,20 @@ section .task-body ul li .task-container .task-btns button.important {
 .form-section .form-container form textarea {
   padding: 0.5rem 1rem;
   font-size: 1.1rem;
-  background-color: #8585856b;
-  color: #fff;
+  background-color: var(--input-2);
+  color: var(--text-color-1);
   border: none;
   border-radius: 5px;
 }
 
 .form-section .form-container form select option {
-  background: #333;
+  background: var(--input-3);
 }
 
 .form-section .form-container form button {
   font-size: 1.1rem;
   padding: 0.5rem 1rem;
+  color: #fff;
 }
 
 .form-section .form-container form button:hover {
