@@ -374,7 +374,7 @@ section .task-body ul li.high {
 }
 
 section .task-body ul li .task-container {
-  background-color: rgb(44, 46, 57);
+  background-color: var(--nav-bg);
   padding: 1rem;
   border-radius: 5px;
   display: flex;
@@ -606,7 +606,6 @@ section .task-body ul li .task-container .task-btns button.important {
     left: 0;
     top: var(--header-height);
     height: calc(100vh - var(--header-height));
-    width: 220px;
     transform: translateX(-100%);
     transition: 0.3s ease;
   }
