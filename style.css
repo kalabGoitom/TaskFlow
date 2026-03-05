@@ -120,6 +120,18 @@ textarea {
   color: green !important;
 }
 
+.old-task {
+  background-color: rgba(255, 0, 0, 0.356);
+}
+
+.success {
+  background: rgb(0, 109, 0);
+}
+
+.danger {
+  background-color: rgb(183, 0, 0);
+}
+
 /* Header Styling */
 header {
   background-color: var(--header-bg);
@@ -545,7 +557,8 @@ section .task-body ul li .task-container .task-btns button.important {
 }
 
 /* Modal section */
-.form-section {
+.form-section,
+.modal-section {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.386);
   inset: 0;
@@ -599,6 +612,14 @@ section .task-body ul li .task-container .task-btns button.important {
   flex-direction: column;
 }
 
+.form-section .form-container p {
+  text-transform: capitalize;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  color: #fff;
+  border-radius: 5px;
+}
+
 .form-section .form-container form .input-group {
   display: flex;
   gap: 10px;
@@ -642,6 +663,69 @@ section .task-body ul li .task-container .task-btns button.important {
 
 .form-section .form-container form button:hover {
   transform: translateY(-4px);
+}
+
+/* Modal Section styling */
+.modal-section .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-section .container .modal-container {
+  background: var(--secondary-bg);
+  padding: 4rem 2rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  color: var(--text-color-1);
+  width: 100%;
+}
+
+.modal-section .container .modal-container .btn-container {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.modal-section .container .modal-container .btn-container button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 1.1rem;
+}
+
+.modal-section .container .modal-container .btn-container button.sure {
+  background-color: #2ecc71;
+  transition: all linear 0.3s;
+}
+.modal-section .container .modal-container .btn-container button.sure:hover {
+  background-color: #099c47;
+  transform: translateY(-4px);
+}
+
+.modal-section .container .modal-container .btn-container button.not-sure {
+  background-color: #ff6b6b;
+  transition: all linear 0.3s;
+}
+
+.modal-section
+  .container
+  .modal-container
+  .btn-container
+  button.not-sure:hover {
+  background-color: #fe3939;
+  transform: translateY(-4px);
+}
+
+.modal-section
+  .container
+  .modal-container
+  .btn-container
+  button.not-sure:hover {
+  background-color: #ff4f4f;
 }
 
 /* Mobile version */

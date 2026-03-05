@@ -61,6 +61,11 @@
               <span><i class="fa-solid fa-clock"></i></span>
               <span>Completed</span>
             </li>
+            <!-- old tasks container -->
+            <li data-id="overDue">
+              <span><i class="fas fa-hourglass-end"></i></span>
+              <span>Over Due</span>
+            </li>
           </ul>
         </nav>
 
@@ -133,6 +138,7 @@
           <div class="form-container">
             <div class="header-container">
               <h2>Add New Task</h2>
+              <p id="form-alert"></p>
               <button id="hide-btn"><i class="fa fa-times"></i></button>
             </div>
             <form action="">
@@ -164,6 +170,20 @@
                 <button id="save-task" type="submit">Save Tasks</button>
               </div>
             </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="modal-section hide">
+        <div class="container">
+          <div class="modal-container">
+            <div class="message-container">
+              <h2>Are you sure?</h2>
+            </div>
+            <div class="btn-container confirm-btn">
+              <button class="sure" id="confirm-yes" data-id="yes">Yes</button>
+              <button class="not-sure" id="confirm-no" data-id="no">No</button>
+            </div>
           </div>
         </div>
       </section>

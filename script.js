@@ -7,6 +7,8 @@ const sortOptions = document.querySelector(".sort-type");
 const sortOptionsContainer = sortOptions.querySelector("ul");
 const asideEl = document.querySelector("aside");
 const currentTaskEl = document.getElementById("current-task");
+const formAlertEl = document.getElementById("form-alert");
+const modalSection = document.querySelector(".modal-section");
 
 // Form section El
 const formSection = document.querySelector(".form-section");
@@ -23,6 +25,8 @@ const saveTaskBtn = document.getElementById("save-task");
 const showNavBtn = document.getElementById("show-nav-btn");
 const dayBtn = document.querySelector(".day-mode");
 const nightBtn = document.querySelector(".night-mode");
+const confirmYesBtn = document.getElementById("confirm-yes");
+const confirmNoBtn = document.getElementById("confirm-no");
 
 let taskList = JSON.parse(localStorage.getItem("taskList")) || [];
 
@@ -35,7 +39,8 @@ let sortingMethod = null;
 let searchQuery = "";
 let activeTab = "all";
 let selectedPriority = "all";
-
+let confirmed = null;
+let targetElId = null;
 let todayDate = new Date().toISOString().split("T")[0];
 
 // eventListners
@@ -54,13 +59,14 @@ addBtn.addEventListener("click", () => {
 saveTaskBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  if (!(taskTitle.value && taskDue.value)) {
-    console.log("Invalid input");
+  if (!(taskTitle.value.trim() && taskDue.value)) {
+    formAlert("error");
     return;
   }
 
   if (isEditing) {
     edit(editId);
+    formAlert("edited");
     return;
   }
 
@@ -76,8 +82,8 @@ saveTaskBtn.addEventListener("click", (e) => {
   });
 
   createTask();
+  formAlert("success");
   updateUI();
-  formSection.classList.toggle("hide");
   reset();
 });
 
@@ -107,9 +113,12 @@ navBarContainer.addEventListener("click", (e) => {
 taskListContainer.addEventListener("click", (e) => {
   const el = e.target.closest("li");
   if (!el) return;
-  const elId = String(el.dataset.id);
+  targetElId = String(el.dataset.id);
 
-  if (e.target.classList.contains("fa-trash")) deleteTask(elId);
+  if (e.target.classList.contains("fa-trash")) {
+    modalSection.classList.remove("hide");
+    // deleteTask(targetEleId);
+  }
   if (e.target.classList.contains("fa-edit")) editTask(elId);
   if (e.target.classList.contains("fa-star")) {
     importantList(elId, e.target.parentElement);
@@ -117,19 +126,20 @@ taskListContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("checkbox")) taskCompleted(elId);
 });
 
+// searching event
 searchBarEl.addEventListener("input", () => {
   isSearching = true;
   searchQuery = searchBarEl.value;
-  // filterSearch(searchInput);
   updateUI();
 });
 
+// Priority selection event
 priorityOption.addEventListener("change", () => {
   selectedPriority = priorityOption.value;
-  // filterPriority(priority);
   updateUI();
 });
 
+// Sorting event
 sortBtn.addEventListener("click", () => {
   if (sortIsHidden) {
     sortOptions.style.display = "block";
@@ -145,27 +155,37 @@ sortOptionsContainer.addEventListener("click", (e) => {
   if (!sortType) return;
   sortingMethod = sortType.toLowerCase();
   sortOptions.style.display = "none";
-
-  // sortTask(sortingMethod);
   updateUI();
 });
 
+// Hiding or showing Navigation on mobile
 showNavBtn.addEventListener("click", () => {
   asideEl.classList.toggle("show");
 });
 
+// Theme event
 nightBtn.addEventListener("click", () => {
   dayBtn.classList.remove("hide");
   nightBtn.classList.add("hide");
   document.querySelector("body").classList.remove("default");
-  console.log("working");
 });
 
 dayBtn.addEventListener("click", () => {
   dayBtn.classList.add("hide");
   nightBtn.classList.remove("hide");
   document.querySelector("body").classList.add("default");
-  console.log("working");
+});
+
+// confirmation events
+
+confirmNoBtn.addEventListener("click", (e) => {
+  confirmed = e.target.dataset.id;
+  confirmDeletion(confirmed);
+});
+
+confirmYesBtn.addEventListener("click", (e) => {
+  confirmed = e.target.dataset.id;
+  confirmDeletion(confirmed);
 });
 
 // Functions
@@ -187,6 +207,10 @@ function activeNav(linkId) {
     activeTab = "completed";
     updateUI();
     currentTaskEl.textContent = "completed tasks";
+  } else if (linkId === "overDue") {
+    activeTab = "overDue";
+    updateUI();
+    currentTaskEl.textContent = "overdue tasks";
   }
 }
 
@@ -219,9 +243,7 @@ function createTask() {
 }
 
 // Updates the UI
-function renderTasks(task) {
-  let tasks = task;
-
+function renderTasks(tasks) {
   if (tasks.length === 0) {
     taskListContainer.innerHTML = `<p>
                 <span
@@ -251,6 +273,10 @@ function updateUI() {
 
   if (activeTab === "completed") {
     tasks = tasks.filter((task) => task.isCompleted);
+  }
+
+  if (activeTab === "overDue") {
+    tasks = getOverDueTasks();
   }
 
   // Apply search filter
@@ -465,4 +491,44 @@ function sortByAlphabate(tasks) {
     a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
   );
   return tasks;
+}
+
+// overDue Tasks
+
+function getOverDueTasks() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return taskList.filter(
+    (task) => !task.isCompleted && new Date(task.dueDate) < today,
+  );
+}
+
+function formAlert(message) {
+  formAlertEl.classList.remove("hide");
+  if (message === "success") {
+    formAlertEl.textContent = "Task Added!";
+    formAlertEl.classList.add("success");
+  } else if (message === "error") {
+    formAlertEl.textContent = "Invalid Input!";
+    formAlertEl.classList.add("danger");
+  } else if (message === "edited") {
+    formAlertEl.textContent = "Task Edited!";
+    formAlertEl.classList.add("success");
+  }
+
+  setTimeout(() => {
+    formAlertEl.classList.add("hide");
+    formAlertEl.classList.remove("danger");
+    formAlertEl.classList.remove("success");
+    formAlertEl.textContent = "";
+  }, 1500);
+}
+
+function confirmDeletion(confirmationId) {
+  if (confirmationId === "yes") {
+    deleteTask(targetElId);
+  }
+  modalSection.classList.add("hide");
+  targetElId = null;
 }
