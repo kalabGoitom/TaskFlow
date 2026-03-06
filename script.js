@@ -1,3 +1,4 @@
+const body = document.body;
 const taskListContainer = document.getElementById("task-list-container");
 const searchBarEl = document.getElementById("search-bar");
 const priorityOption = document.getElementById("priority");
@@ -29,6 +30,7 @@ const confirmYesBtn = document.getElementById("confirm-yes");
 const confirmNoBtn = document.getElementById("confirm-no");
 
 let taskList = JSON.parse(localStorage.getItem("taskList")) || [];
+let isDark = JSON.parse(localStorage.getItem("isDark")) || false;
 
 // Flags
 let isEditing = false;
@@ -48,6 +50,17 @@ let todayDate = new Date().toISOString().split("T")[0];
 window.addEventListener("DOMContentLoaded", () => {
   updateStatistics();
   renderTasks(taskList);
+  setTheme();
+});
+body.addEventListener("click", (e) => {
+  if (!e.target.closest("aside") && !e.target.closest("#show-nav-btn")) {
+    asideEl.classList.remove("show");
+  }
+
+  if (!e.target.closest("#sort-btn") && !e.target.closest(".sort-type")) {
+    sortOptions.style.display = "none";
+    sortIsHidden = true;
+  }
 });
 
 // adding
@@ -61,6 +74,16 @@ saveTaskBtn.addEventListener("click", (e) => {
 
   if (!(taskTitle.value.trim() && taskDue.value)) {
     formAlert("error");
+    return;
+  }
+
+  // Checking due date
+  const selectedDate = new Date(taskDue.value);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (selectedDate < today) {
+    formAlert("invalidDate");
     return;
   }
 
@@ -117,13 +140,12 @@ taskListContainer.addEventListener("click", (e) => {
 
   if (e.target.classList.contains("fa-trash")) {
     modalSection.classList.remove("hide");
-    // deleteTask(targetEleId);
   }
-  if (e.target.classList.contains("fa-edit")) editTask(elId);
+  if (e.target.classList.contains("fa-edit")) editTask(targetElId);
   if (e.target.classList.contains("fa-star")) {
-    importantList(elId, e.target.parentElement);
+    importantList(targetElId, e.target.parentElement);
   }
-  if (e.target.classList.contains("checkbox")) taskCompleted(elId);
+  if (e.target.classList.contains("checkbox")) taskCompleted(targetElId);
 });
 
 // searching event
@@ -154,7 +176,7 @@ sortOptionsContainer.addEventListener("click", (e) => {
   const sortType = e.target.dataset.type;
   if (!sortType) return;
   sortingMethod = sortType.toLowerCase();
-  sortOptions.style.display = "none";
+  // sortOptions.style.display = "none";
   updateUI();
 });
 
@@ -165,15 +187,15 @@ showNavBtn.addEventListener("click", () => {
 
 // Theme event
 nightBtn.addEventListener("click", () => {
-  dayBtn.classList.remove("hide");
-  nightBtn.classList.add("hide");
-  document.querySelector("body").classList.remove("default");
+  isDark = true;
+  saveTheme();
+  setTheme();
 });
 
 dayBtn.addEventListener("click", () => {
-  dayBtn.classList.add("hide");
-  nightBtn.classList.remove("hide");
-  document.querySelector("body").classList.add("default");
+  isDark = false;
+  saveTheme();
+  setTheme();
 });
 
 // confirmation events
@@ -322,8 +344,19 @@ function html(tasks) {
                     <h3>${task.description}</h3>
 
                     <div class="data-container">
-                      <div class="date">
-                        <span><i class="fa-solid fa-calendar-days"></i></span>
+                      <div class="date ${getTaskStatus(task) === "overdue" ? "overdue" : getTaskStatus(task) === "due-today" ? "today" : ""}">
+
+                        <span>
+                      ${
+                        getTaskStatus(task) === "overdue"
+                          ? '<i class="fa-solid fa-triangle-exclamation"></i>'
+                          : getTaskStatus(task) === "due-today"
+                            ? '<i class="fa-solid fa-clock"></i>'
+                            : '<i class="fa-solid fa-calendar-days"></i>'
+                      }
+                    </span>
+
+
                         <span>${formatDate(task.dueDate)}</span>
                       </div>
 
@@ -355,9 +388,8 @@ function saveToLocalStorage() {
   localStorage.setItem("taskList", JSON.stringify(taskList));
 }
 
-function getLocaltStorage() {
-  const tasks = JSON.parse(localStorage.getItem("taskList"));
-  return tasks;
+function saveTheme() {
+  localStorage.setItem("isDark", JSON.stringify(isDark));
 }
 
 // Format Date
@@ -515,8 +547,10 @@ function formAlert(message) {
   } else if (message === "edited") {
     formAlertEl.textContent = "Task Edited!";
     formAlertEl.classList.add("success");
+  } else if (message === "invalidDate") {
+    formAlertEl.textContent = "Due date cannot be in the past!";
+    formAlertEl.classList.add("danger");
   }
-
   setTimeout(() => {
     formAlertEl.classList.add("hide");
     formAlertEl.classList.remove("danger");
@@ -531,4 +565,35 @@ function confirmDeletion(confirmationId) {
   }
   modalSection.classList.add("hide");
   targetElId = null;
+}
+
+function setTheme() {
+  if (isDark) {
+    dayBtn.classList.remove("hide");
+    nightBtn.classList.add("hide");
+    body.classList.remove("default");
+  } else {
+    dayBtn.classList.add("hide");
+    nightBtn.classList.remove("hide");
+    body.classList.add("default");
+  }
+}
+
+// checking task status
+function getTaskStatus(task) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const taskDate = new Date(task.dueDate);
+
+  if (!task.isCompleted && taskDate < today) {
+    return "overdue";
+  } else if (
+    !task.isCompleted &&
+    taskDate.toDateString() === today.toDateString()
+  ) {
+    return "due-today";
+  } else {
+    return "normal";
+  }
 }

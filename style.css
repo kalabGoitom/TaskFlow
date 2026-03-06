@@ -43,6 +43,9 @@ body.default {
 
 body {
   font-family: sans-serif;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 ul {
@@ -116,12 +119,12 @@ textarea {
   color: red !important;
 }
 
-.edit-btn {
-  color: green !important;
+.overdue {
+  color: rgba(255, 0, 0, 0.628) !important;
 }
 
-.old-task {
-  background-color: rgba(255, 0, 0, 0.356);
+.edit-btn {
+  color: green !important;
 }
 
 .success {
@@ -130,6 +133,10 @@ textarea {
 
 .danger {
   background-color: rgb(183, 0, 0);
+}
+
+.today {
+  color: rgba(228, 149, 0, 0.724);
 }
 
 /* Header Styling */
@@ -405,6 +412,17 @@ section .task-body ul p i {
   font-size: 2.5rem;
 }
 
+section .task-body ul li {
+  transition: all linear 0.3s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+section .task-body ul li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 0px 10px rgba(120, 120, 120, 0.582);
+}
+
 section .task-body ul li.medium {
   border-left: var(--medium-priority) 5px solid;
   border-bottom-left-radius: 10px;
@@ -430,17 +448,6 @@ section .task-body ul li .task-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-section .task-body ul li {
-  transition: all linear 0.3s;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-section .task-body ul li:hover {
-  transform: translateY(-4px);
-  box-shadow: 0px 0px 10px rgba(120, 120, 120, 0.582);
 }
 
 section .task-body ul li .task-container .task-discription {
