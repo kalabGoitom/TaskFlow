@@ -6,33 +6,33 @@ Built with **HTML, CSS, and JavaScript**, TaskFlow provides an intuitive interfa
 
 ---
 
-##  Features
+## Features
 
-*  Add, edit, and delete tasks
-*  Mark tasks as important
-*  Mark tasks as completed
-*  Track **today's tasks** and **overdue tasks**
-*  Search tasks by title
-*  Filter tasks by **priority**
-*  View task **statistics** (total, completed, pending)
-*  Sort tasks by:
+- Add, edit, and delete tasks
+- Mark tasks as important
+- Mark tasks as completed
+- Track **today's tasks** and **overdue tasks**
+- Search tasks by title
+- Filter tasks by **priority**
+- View task **statistics** (total, completed, pending)
+- Sort tasks by:
 
-  * Priority
-  * Due date
-  * Alphabetically
-*  Toggle between **Dark Mode and Light Mode**
-*  Tasks are saved using **LocalStorage**
-*  Fully **responsive design** for mobile and desktop
+- Priority
+- Due date
+- Alphabetically
+- Toggle between **Dark Mode and Light Mode**
+- Tasks are saved using **LocalStorage**
+- Fully **responsive design** for mobile and desktop
 
 ---
 
-##  Technologies Used
+## Technologies Used
 
-* **HTML5**
-* **CSS3**
-* **Vanilla JavaScript**
-* **LocalStorage API**
-* **Font Awesome Icons**
+- **HTML5**
+- **CSS3**
+- **Vanilla JavaScript**
+- **LocalStorage API**
+- **Font Awesome Icons**
 
 ---
 
@@ -49,7 +49,7 @@ TaskFlow
 
 ---
 
-##  How to Run the Project
+## How to Run the Project
 
 1. Clone the repository
 
@@ -67,7 +67,7 @@ cd taskflow
 
 ---
 
-##  Live Demo
+## Live Demo
 
 You can view the live version here:
 
@@ -77,28 +77,41 @@ You can view the live version here:
 
 ---
 
-##  Screenshots
+## Screenshots
 
-(Add screenshots of your app here later)
+### Dashboard
+
+![Dashboard](images/dashboard.png)
+
+### light Mode
+
+![Dark Mode](images/lightMode.png)
+
+### Dark Mode
+
+![Dark Mode](images/darkmode.png)
+
+### Mobile View
+
+![Mobile View](images/mobile.png)
 
 ---
 
-##  Future Improvements
+## Future Improvements
 
-* Task categories or tags
-* Drag and drop task ordering
-* Backend database integration
-* User authentication
-* Notifications for upcoming tasks
+- Task categories or tags
+- Backend database integration
+- User authentication
+- Notifications for upcoming tasks
 
 ---
 
-##  Author
+## Author
 
 Developed by **Kalab Goitom**
 
 ---
 
-##  Support
+## Support
 
 If you like this project, feel free to **star the repository** and share feedback!
