@@ -72,7 +72,7 @@ cd taskflow
 You can view the live version here:
 
 ```
-[(https://taskflow-green-two.vercel.app/)]
+[Visit app](https://taskflow-green-two.vercel.app/)
 ```
 
 ---
